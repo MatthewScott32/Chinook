@@ -1,0 +1,150 @@
+SELECT c.CustomerId, c.FirstName, c.LastName, c.country
+FROM Customer c
+WHERE NOT c.Country='USA';
+-- NOT LIKE is case INSENSITIVE
+
+SELECT *
+FROM Customer c
+WHERE c.Country IS 'Brazil';
+
+SELECT c.FirstName, c.LastName, i.InvoiceId, i.InvoiceDate, i.BillingCountry
+FROM Invoice i
+JOIN Customer c
+ON c.CustomerId = i.CustomerId
+WHERE c.Country IS 'Brazil';
+
+SELECT e.FirstName, e.LastName, e.Title
+FROM Employee e
+WHERE e.Title IS 'Sales Support Agent';
+
+SELECT DISTINCT i.BillingCountry
+FROM Invoice i
+ORDER BY i.BillingCountry;
+
+SELECT i.*, e.FirstName, e.LastName
+FROM Invoice i
+JOIN Customer c
+ON i.CustomerId = c.CustomerId
+JOIN Employee e
+ON c.SupportRepId = e.EmployeeId;
+
+SELECT i.Total, c.FirstName, c.LastName, c.Country, e.FirstName, e.LastName
+FROM Invoice i
+JOIN Customer c
+ON c.CustomerId = i.CustomerId
+JOIN Employee e
+ON e.EmployeeId = c.SupportRepId;
+
+SELECT COUNT (i.InvoiceId)
+FROM Invoice i
+WHERE i.InvoiceDate BETWEEN '2009-01-01' AND '2010-01-01';
+
+SELECT COUNT (i.InvoiceId)
+FROM Invoice i
+WHERE i.InvoiceDate BETWEEN '2010-12-31' AND '2012-01-01';
+
+SELECT COUNT (i.Total)
+FROM Invoice i
+WHERE i.InvoiceDate BETWEEN '2008-12-31' AND '2010-01-01';
+
+SELECT COUNT (i.Total)
+FROM Invoice i
+WHERE i.InvoiceDate BETWEEN '2010-12-31' AND '2012-01-01';
+
+SELECT COUNT (il.InvoiceId)
+FROM InvoiceLine il
+WHERE il.InvoiceId='37';
+
+SELECT COUNT()
+FROM InvoiceLine il
+GROUP BY InvoiceId;
+
+SELECT il.InvoiceLineId, il.InvoiceId, t.Name
+FROM InvoiceLine il
+JOIN Track t
+ON il.TrackId = t.TrackId;
+
+SELECT il.InvoiceLineId, il.InvoiceId, t.Name, a.Name
+FROM InvoiceLine il
+JOIN Track t
+ON il.TrackId = t.TrackId
+JOIN Artist a; 
+
+SELECT COUNT(i.BillingCountry)
+FROM Invoice i
+GROUP BY i.BillingCountry;
+
+SELECT p.Name, COUNT(plt.TrackId)
+FROM Playlist p
+JOIN PlaylistTrack plt
+ON plt.PlaylistId = p.PlaylistId
+GROUP BY p.Name;
+
+SELECT t.Name, a.Title, m.Name, g.Name
+FROM Track t
+JOIN Album a
+ON a.AlbumId = t.AlbumId
+JOIN MediaType m
+ON m.MediaTypeId = t.MediaTypeId
+JOIN Genre g
+ON g.GenreId = t.GenreId
+ORDER BY t.Name;
+
+SELECT i.*, COUNT(il.InvoiceLineId)
+FROM Invoice i
+JOIN InvoiceLine il
+ON il.InvoiceId = i.InvoiceId
+GROUP BY i.InvoiceId;
+
+SELECT e.Firstname, e.LastName, COUNT(i.Total)
+FROM Invoice i
+JOIN Customer c
+ON c.CustomerId = i.CustomerId
+JOIN Employee e
+ON c.SupportRepId = e.EmployeeId
+Group BY 'Sales Support Agent';
+
+SELECT e.FirstName, e.LastName, SUM(Total)
+FROM Invoice i
+JOIN Customer c
+ON c.CustomerId = i.CustomerId
+JOIN Employee e
+ON e.EmployeeId = c.SupportRepId
+WHERE i.InvoiceDate BETWEEN '2008-12-31' AND '2010-01-01'
+GROUP BY e.FirstName, e.LastName;
+
+SELECT e.FirstName, e.LastName, MAX(i.Total)
+FROM Invoice i
+JOIN Customer c
+ON i.CustomerId = c.CustomerId
+JOIN Employee e
+ON c.SupportRepId = e.EmployeeId
+Group BY "Sales Support Agent";
+
+SELECT e.FirstName, e.LastName, COUNT()
+FROM Customer c
+JOIN Employee e 
+ON c.SupportRepId = e.EmployeeId
+GROUP BY 'Sales Support Agent';
+
+SELECT i.BillingCountry, 
+COUNT (i.Total)
+FROM Invoice i
+GROUP BY i.BillingCountry;
+
+SELECT i.BillingCountry, 
+MAX (i.Total)
+FROM Invoice i
+GROUP BY i.BillingCountry;
+
+SELECT il.InvoiceId, il.TrackId, t.Name
+FROM InvoiceLine il
+JOIN Track t
+ON il.TrackId = t.TrackId
+GROUP BY InvoiceId;
+
+SELECT TOP 5 il.InvoiceId, il.TrackId, t.Name
+FROM InvoiceLine il
+JOIN Track t
+ON il.TrackId = t.TrackId
+GROUP BY InvoiceId;
